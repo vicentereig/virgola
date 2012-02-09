@@ -1,7 +1,7 @@
 require 'virgola'
 
 class Person
-  include Virgola
+  include Virgola::AttributeMethods
 
   attribute :id,   match: 'refno'
   attribute :name, match: 'givenname'
@@ -15,6 +15,7 @@ describe Virgola do
 
   it 'should respond to the id method' do
     @person.should respond_to :id
+    @person.should respond_to :name
   end
 
 end
