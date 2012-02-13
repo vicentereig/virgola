@@ -39,22 +39,20 @@ module Virgola
       end
     end
 
-    module InstanceMethods
-      def attribute(name)
-        instance_variable_get "@#{name}"
-      end
+    def attribute(name)
+      instance_variable_get "@#{name}"
+    end
 
-      def attribute=(name)
-        instance_variable_set "@#{name}"
-      end
+    def attribute=(name)
+      instance_variable_set "@#{name}"
+    end
 
-      def attribute?(name)
-        self.attribute(name).present?
-      end
+    def attribute?(name)
+      self.attribute(name).present?
+    end
 
-      def attributes
-        self.class.attributes
-      end
+    def attributes
+      self.class.attributes
     end
   end
 end

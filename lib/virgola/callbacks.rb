@@ -1,22 +1,33 @@
 # encoding: UTF-8
 module Virgola
   module Callbacks
-    extend  ActiveSupport::Concern
+    extend ActiveSupport::Concern
 
-    include ActiveModel::Callbacks
-
+    # ActiveModel::Callbacks is just a Ruby module, not a ActiveSupport::Concern module.
     included do
-      define_model_callbacks :parse, only: [:after] # TODO: parse is a class method, i'll need to define a `define_model_callback`
+      extend  ActiveModel::Callbacks
+      include ActiveModel::Validations::Callbacks
+      define_model_callbacks :parse, only: [:after]
       define_model_callbacks :map,   only: [:after]
+
     end
 
     module ClassMethods
+      include ActiveModel::Callbacks
 
+      #
+      #alias_method_chain :map, :callbacks
+      #alias_method_chain :parse, :callbacks
+
+      def self.parse_with_callbacks
+        self.parse_without_callbacks
+        run_callbacks(:parse) { super }
+      end
     end
 
-    module InstanceMethods
-
+    def map_with_callbacks
+      self.map_without_callbacks
+      run_callbacks(:map) { super }
     end
-
   end
 end
