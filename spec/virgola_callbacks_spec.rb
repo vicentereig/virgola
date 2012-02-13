@@ -6,8 +6,7 @@ module DummyMapper
 
   module ClassMethods
     def parse(csv)
-      puts "hello parsing"
-      run_callbacks(:parse) { super }
+      true
     end
   end
 
@@ -19,7 +18,6 @@ end
 class Person
   include Virgola::Callbacks, DummyMapper
 
-  after_parse :do_something_after_parsing
   after_map   :do_something_after_map_a_row
 
   protected
