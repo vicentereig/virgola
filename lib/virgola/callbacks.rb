@@ -14,9 +14,5 @@ module Virgola
     module ClassMethods
       include ActiveModel::Callbacks
     end
-
-    def map
-      run_callbacks(:map) { super }
-    end
   end
 end

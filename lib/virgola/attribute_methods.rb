@@ -36,7 +36,8 @@ module Virgola
 
       def attribute(name, options={})
         define_attribute_methods Array.wrap name
-        attributes << Attribute.new(name.to_sym, options)
+        attribute = Attribute.new(name.to_sym, options)
+        attributes << attribute unless attributes.include?(attribute)
       end
     end
 

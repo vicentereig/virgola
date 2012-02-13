@@ -35,6 +35,6 @@ describe Virgola do
 
   it 'should process callbacks after mapping' do
     @person.should_receive :do_something_after_map_a_row
-    @person.map
+    @person.run_callbacks(:map)
   end
 end
