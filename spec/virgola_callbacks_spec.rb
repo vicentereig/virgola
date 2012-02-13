@@ -36,15 +36,8 @@ describe Virgola do
     @person = Person.new
   end
 
-  it 'should process callbacks after parsing' do
-    Person.should_receive :do_something_after_parsing
-
-    Person.parse("csv contents")
-  end
-
   it 'should process callbacks after mapping' do
     @person.should_receive :do_something_after_map_a_row
-
     @person.map
   end
 end

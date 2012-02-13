@@ -31,28 +31,29 @@ module Virgola
 
     module ClassMethods
       def attributes
-        @attributes ||= []
+        @attributes ||= {}
       end
 
       def attribute(name, options={})
-        attributes << Attribute.new(name.to_sym, options)
+        attributes[name.to_sym] = Attribute.new(name.to_sym, options)
       end
     end
+    module InstanceMethods
+      def attribute(name)
+        instance_variable_get :"@#{name}"
+      end
 
-    def attribute(name)
-      instance_variable_get "@#{name}"
-    end
+      def attribute=(name)
+        instance_variable_set :"@#{name}", self
+      end
 
-    def attribute=(name)
-      instance_variable_set "@#{name}"
-    end
+      def attribute?(name)
+        self.attribute(name).present?
+      end
 
-    def attribute?(name)
-      self.attribute(name).present?
-    end
-
-    def attributes
-      self.class.attributes
+      def attributes
+        self.class.attributes
+      end
     end
   end
 end
