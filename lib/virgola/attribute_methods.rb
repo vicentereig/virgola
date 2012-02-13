@@ -31,11 +31,11 @@ module Virgola
 
     module ClassMethods
       def attributes
-        @attributes ||= {}
+        @attributes ||= []
       end
 
       def attribute(name, options={})
-        attributes[name.to_s] = Attribute.new(name.to_sym, options)
+        attributes << Attribute.new(name.to_sym, options)
       end
     end
 
