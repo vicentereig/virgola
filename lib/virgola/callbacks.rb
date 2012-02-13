@@ -9,24 +9,18 @@ module Virgola
       include ActiveModel::Validations::Callbacks
       define_model_callbacks :parse, only: [:after]
       define_model_callbacks :map,   only: [:after]
-
     end
 
     module ClassMethods
       include ActiveModel::Callbacks
 
-      #
-      #alias_method_chain :map, :callbacks
-      #alias_method_chain :parse, :callbacks
-
-      def self.parse_with_callbacks
-        self.parse_without_callbacks
-        run_callbacks(:parse) { super }
-      end
+      #def self.parse_with_callback
+      #  self.parse_without_callback
+      #  run_callbacks(:parse) { super }
+      #end
     end
 
-    def map_with_callbacks
-      self.map_without_callbacks
+    def map
       run_callbacks(:map) { super }
     end
   end
