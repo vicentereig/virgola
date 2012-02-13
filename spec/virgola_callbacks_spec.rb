@@ -18,12 +18,9 @@ end
 class Person
   include Virgola::Callbacks, DummyMapper
 
-  after_map   :do_something_after_map_a_row
+  after_map :do_something_after_map_a_row
 
   protected
-  def do_something_after_parsing
-    puts "after parsing"
-  end
 
   def do_something_after_map_a_row
     true

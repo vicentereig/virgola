@@ -16,7 +16,6 @@ describe Virgola do
   end
 
   it 'should respond to the id method' do
-    binding.pry
     @person.should respond_to :id
     @person.should respond_to :name
   end
