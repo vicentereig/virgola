@@ -3,6 +3,7 @@ h1. virgola
 CSV to object mapping library.
 
 h2. Author
+
 "Vicente Reig Rincón de Arellano":http://twitter.com/vicentereig
 
 
