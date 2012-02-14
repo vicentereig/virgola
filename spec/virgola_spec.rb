@@ -38,9 +38,9 @@ describe Virgola do
 
   before :each do
     @person_parser = Person.parse(CSV_INPUT)
-    @chris   = Person.new { |p| p.id = 1; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}
-    @konsti  = Person.new { |p| p.id = 2; p.name = "Konstantin Krauss"; p.email = "konstantin@propertybase.com"}
-    @vicente = Person.new { |p| p.id = 3; p.name = "Vicente Reig";      p.email = "vicente@propertybase.com"}
+    @chris   = Person.new { |p| p.id = "1"; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}
+    @konsti  = Person.new { |p| p.id = "2"; p.name = "Konstantin Krauss"; p.email = "konstantin@propertybase.com"}
+    @vicente = Person.new { |p| p.id = "3"; p.name = "Vicente Reig";      p.email = "vicente@propertybase.com"}
     @expected_pips = [@chris, @konsti, @vicente]
   end
 
