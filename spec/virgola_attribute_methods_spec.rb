@@ -1,6 +1,4 @@
-require 'rubygems'
-require 'pry'
-require 'virgola'
+require 'spec_helper'
 
 class Person
   include Virgola::AttributeMethods

@@ -3,22 +3,25 @@
 require 'active_model'
 require 'active_support/all'
 
-require './lib/virgola/version'
-require './lib/virgola/attribute_methods'
-require './lib/virgola/extraction_methods'
-require './lib/virgola/csv_parser'
-require './lib/virgola/callbacks'
+require 'virgola/version'
+require 'virgola/attribute_methods'
+require 'virgola/extraction_methods'
+require 'virgola/csv_parser'
+require 'virgola/callbacks'
 
 module Virgola
   extend  ActiveSupport::Concern
 
   include Virgola::AttributeMethods
   include Virgola::Callbacks
-  include Virgola::ExtractionMethods
+
+  class CSVParser
+    include Virgola::ExtractionMethods
+  end
 
   module ClassMethods
     def parse(csv)
-      @parser ||= CSVParser.new self, csv.strip.split("\n")
+      @parser = CSVParser.new self, csv.strip.split("\n")
     end
   end
 end

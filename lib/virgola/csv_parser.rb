@@ -4,8 +4,6 @@ require 'csv'
 
 module Virgola
   class CSVParser
-    include Virgola::ExtractionMethods
-
     def initialize(klass, contents)
       @klass = klass
       @contents = contents
@@ -16,11 +14,11 @@ module Virgola
       result_set.collect { |result_set_row| map(result_set_row) }
     end
 
-    def map(result_set_row)
+    def map(values)
       mapped_object = @klass.new
 
       @klass.attributes.each.with_index do |attr, index|
-        mapped_object.send "#{attr.name}=", result_set_row[index]
+        mapped_object.send("#{attr.name}=", values[index])
       end
       mapped_object.run_callbacks(:map)
       mapped_object

@@ -1,13 +1,14 @@
-# encoding: UTF-8
-require File.expand_path('../lib/virgola/version' , __FILE__)
+# -*- encoding: utf-8 -*-
+$:.push File.expand_path("../lib", __FILE__)
+require "virgola/version"
 
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
-  s.name        = 'Virgola'
-  s.version     = Virgola::VERSION::STRING
+  s.name        = 'virgola'
+  s.version     = Virgola::VERSION
   s.summary     = 'An attempt to make CSV parsing and mapping suck less.'
   s.description = 'Virgola is a CSV to Ruby objects mapper.'
-
+  s.files       = Dir.glob("{lib,spec}/**/*") + %w[License Rakefile README.rdoc]
   s.required_ruby_version     = '>= 1.9.2'
   s.required_rubygems_version = '>= 1.8.11'
 
@@ -18,4 +19,10 @@ Gem::Specification.new do |s|
   s.add_dependency('activesupport', '3.1.3')
   s.add_dependency('activemodel',   '3.1.3')
   s.add_dependency('bundler',       '~> 1.0')
+
+  s.files         = `git ls-files`.split("\n")
+  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
+  # s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
+  s.require_paths = ["lib"]
+
 end

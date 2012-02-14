@@ -1,0 +1,46 @@
+= virgola
+
+CSV to object mapping library.
+
+== Usage
+
+Given the following CSV file
+
+  id,name,email
+  1,"Chris Floess",chris@propertybase.com
+  2,"Konstantin Krauss",konstantin@propertybase.com
+  3,"Vicente Reig",vicente@propertybase.com
+
+You map it to an array of Person objects.
+
+  class Person
+    include Virgola
+
+    attribute :id
+    attribute :name
+    attribute :email
+
+    def initialize
+      yield self if block_given?
+    end
+
+    after_map :do_something_after_map_a_row
+
+    def ==(pip)
+      return false unless pip.is_a?(Person)
+      self.id == pip.id && self.name == pip.name && self.email == pip.email
+    end
+
+    protected
+
+    def do_something_after_map_a_row
+      puts 'yes, victory!'
+    end
+  end
+
+You can parse and map the file with the initial Extraction API:
+
+  Person.parse(csv_contents).all   # Array of Person instances mapping the guys above
+  Person.parse(csv_contents).count # 3
+  Person.parse(csv_contents).each { |pip| # do stuff }
+  Person.parse(csv_contents).in_groups_of(100) { |pips| # do stuff }

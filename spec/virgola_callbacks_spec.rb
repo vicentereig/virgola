@@ -1,5 +1,4 @@
-require 'rubygems'
-require 'virgola'
+require 'spec_helper'
 
 module DummyMapper
   extend ActiveSupport::Concern
