@@ -71,7 +71,7 @@ Attributes are overridable.
 <pre lang="ruby">
   class Person
     def email
-      "#<{super}>"
+      "<#{super}>"
     end
   end
 
