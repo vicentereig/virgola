@@ -9,7 +9,7 @@ h2. Author
 
 h2. Installation
 
-<pre lang="bash"
+<pre lang="bash">
   $ gem install virgola
 </pre>
 
