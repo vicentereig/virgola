@@ -1,6 +1,11 @@
 = virgola
 
 CSV to object mapping library.
+
+== Author
+Vicente Reig Rincón de Arellano <vicente@propertybase.com> http://twitter.com/vicentereig
+
+
 == Installation
 
   gem install virgola
