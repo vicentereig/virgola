@@ -9,7 +9,9 @@ h2. Author
 
 h2. Installation
 
-  gem install virgola
+<pre lang="bash"
+  $ gem install virgola
+</pre>
 
 h2. Usage
 
@@ -36,7 +38,7 @@ You map it to an array of Person objects.
       yield self if block_given?
     end
 
-    after_map :do_something_after_map_a_row
+    after_map :do_something_after_mapping_a_row
 
     def ==(pip)
       return false unless pip.is_a?(Person)
@@ -45,8 +47,8 @@ You map it to an array of Person objects.
 
     protected
 
-    def do_something_after_map_a_row
-      puts 'yes, victory!'
+    def do_something_after_mapping_a_row
+      puts 'YES, victory!'
     end
   end
 </pre>
@@ -54,8 +56,26 @@ You map it to an array of Person objects.
 You can parse and map the file with the initial Extraction API:
 
 <pre lang="ruby">
-  Person.parse(csv_contents).all   # Array of Person instances mapping the guys above
-  Person.parse(csv_contents).count # 3
-  Person.parse(csv_contents).each { |pip| # do stuff }
-  Person.parse(csv_contents).in_groups_of(100) { |pips| # do stuff }
+  Person.parse(csv).all   # Array of Person instances mapping the guys above
+  Person.parse(csv).count # 3
+  Person.parse(csv).each { |pip|
+    # do stuff
+  }
+  Person.parse(csv).in_groups_of(100) { |pips|
+    # do stuff
+  }
+</pre>
+
+Attributes are overridable.
+
+<pre lang="ruby">
+  class Person
+    def email
+      "#<{super}>"
+    end
+  end
+
+  Person.parse(csv).each do |pip|
+    puts pip.email # <chris@propertybase.com>, ...
+  end
 </pre>

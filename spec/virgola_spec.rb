@@ -64,4 +64,14 @@ describe Virgola do
       @expected_pips.should include group.first
     }
   end
+
+  it 'should allow to override attributes' do
+    class Person
+      def email
+        "<#{super}>"
+      end
+    end
+
+    @chris.email.should == "<chris@propertybase.com>"
+  end
 end
