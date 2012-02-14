@@ -1,26 +1,29 @@
-= virgola
+h1. virgola
 
 CSV to object mapping library.
 
-== Author
-Vicente Reig Rincón de Arellano <vicente@propertybase.com> http://twitter.com/vicentereig
+h2. Author
+"Vicente Reig Rincón de Arellano":http://twitter.com/vicentereig
 
 
-== Installation
+h2. Installation
 
   gem install virgola
 
-== Usage
+h2. Usage
 
 Given the following CSV file
 
+<pre lang="csv">
   id,name,email
   1,"Chris Floess",chris@propertybase.com
   2,"Konstantin Krauss",konstantin@propertybase.com
   3,"Vicente Reig",vicente@propertybase.com
+</pre>
 
 You map it to an array of Person objects.
 
+<pre lang="ruby">
   class Person
     include Virgola
 
@@ -45,10 +48,13 @@ You map it to an array of Person objects.
       puts 'yes, victory!'
     end
   end
+</pre>
 
 You can parse and map the file with the initial Extraction API:
 
+<pre lang="ruby">
   Person.parse(csv_contents).all   # Array of Person instances mapping the guys above
   Person.parse(csv_contents).count # 3
   Person.parse(csv_contents).each { |pip| # do stuff }
   Person.parse(csv_contents).in_groups_of(100) { |pips| # do stuff }
+</pre>
