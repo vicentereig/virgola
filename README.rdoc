@@ -1,6 +1,9 @@
 = virgola
 
 CSV to object mapping library.
+== Installation
+
+  gem install virgola
 
 == Usage
 
