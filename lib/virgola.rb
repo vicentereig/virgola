@@ -4,6 +4,7 @@ require 'active_model'
 require 'active_support/all'
 
 require 'virgola/version'
+require 'virgola/attribute'
 require 'virgola/attribute_methods'
 require 'virgola/extraction_methods'
 require 'virgola/csv_parser'

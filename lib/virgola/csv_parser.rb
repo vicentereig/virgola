@@ -5,7 +5,7 @@ require 'csv'
 module Virgola
   class CSVParser
     def initialize(klass, contents)
-      @klass = klass
+      @klass    = klass
       @contents = contents
     end
 
@@ -18,7 +18,7 @@ module Virgola
       mapped_object = @klass.new
 
       @klass.attributes.each.with_index do |attr, index|
-        mapped_object.send("#{attr.name}=", values[index])
+        attr.map(mapped_object, values[index])
       end
       mapped_object.run_callbacks(:map)
       mapped_object

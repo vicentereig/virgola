@@ -5,22 +5,6 @@
 # http://railstips.org/blog/archives/2010/08/29/building-an-object-mapper-override-able-accessors/
 #
 module Virgola
-
-  class Attribute
-    attr_accessor :name, :options, :value
-
-    def initialize(name,*args)
-      @name    = name
-      @value   = nil
-      @options = args.extract_options!
-    end
-
-    def ==(attribute)
-      return false unless attribute.is_a?(Attribute)
-      self.name == attribute.name && self.value == attribute.value
-    end
-  end
-
   module AttributeMethods
     extend  ActiveSupport::Concern
     include ActiveModel::AttributeMethods
@@ -34,9 +18,9 @@ module Virgola
         @attributes ||= []
       end
 
-      def attribute(name, options={})
+      def attribute(name, type=String, options={})
         define_attribute_methods Array.wrap name
-        attribute = Attribute.new(name.to_sym, options)
+        attribute = Attribute.new(name.to_sym, type, options)
         attributes << attribute unless attributes.include?(attribute)
       end
     end
@@ -50,7 +34,6 @@ module Virgola
     end
 
     def attribute?(name)
-      binding.pry
       self.attribute(name).present?
     end
 
