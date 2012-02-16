@@ -65,10 +65,20 @@ describe Virgola do
     }
   end
 
-  it 'should allow to override attributes' do
+  it 'should allow to override attribute accesors' do
     class Person
       def email
         "<#{super}>"
+      end
+    end
+
+    @chris.email.should == "<chris@propertybase.com>"
+  end
+
+  it 'should allow to access instance attributes' do
+    class Person
+      def email
+        "<#{@email}>"
       end
     end
 
