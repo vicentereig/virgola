@@ -24,7 +24,7 @@ Given the following CSV file
   3,"Vicente Reig",vicente@propertybase.com
 </pre>
 
-You map it to an array of Person objects.
+You map it to an array of Person objects by specifying to match columns with the `attribute` method.
 
 <pre lang="ruby">
   class Person
@@ -34,16 +34,7 @@ You map it to an array of Person objects.
     attribute :name
     attribute :email
 
-    def initialize
-      yield self if block_given?
-    end
-
     after_map :do_something_after_mapping_a_row
-
-    def ==(pip)
-      return false unless pip.is_a?(Person)
-      self.id == pip.id && self.name == pip.name && self.email == pip.email
-    end
 
     protected
 
@@ -53,7 +44,7 @@ You map it to an array of Person objects.
   end
 </pre>
 
-You can parse and map the file with the initial Extraction API:
+You actually extract the data and perform the mappings using the Extraction API.
 
 <pre lang="ruby">
   Person.parse(csv).all   # Array of Person instances mapping the guys above
@@ -72,6 +63,20 @@ Attributes are overridable.
   class Person
     def email
       "<#{super}>"
+    end
+  end
+
+  Person.parse(csv).each do |pip|
+    puts pip.email # <chris@propertybase.com>, ...
+  end
+</pre>
+
+You can access the mappings also as instance attributes.
+
+<pre lang="ruby">
+  class Person
+    def email
+      "<#{@email}>"
     end
   end
 
