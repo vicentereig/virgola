@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.name        = 'virgola'
   s.version     = Virgola::VERSION
   s.summary     = 'An attempt to make CSV parsing and mapping suck less.'
-  s.description = 'Virgola is a CSV to Ruby objects mapper.'
+  s.description = 'Virgola is a CSV to object mapper.'
   s.files       = Dir.glob("{lib,spec}/**/*") + %w[License Rakefile README.textile]
   s.required_ruby_version     = '>= 1.9.2'
   s.required_rubygems_version = '>= 1.8.11'
