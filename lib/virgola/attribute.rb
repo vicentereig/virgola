@@ -6,7 +6,7 @@ module Virgola
 
 
   class Attribute
-    attr_accessor :name, :type, :value, :options
+    attr_accessor :name, :type, :options
 
     def initialize(name,type=String,*args)
       @name    = name
@@ -23,20 +23,29 @@ module Virgola
     # Based on <https://github.com/jnunemaker/happymapper/blob/master/lib/happymapper/item.rb#L84>
     #
     def cast(value)
-      cast_value =
-          case self.type
-            when Float    then self.value.to_f
-            when Integer  then self.value.to_i
-            when Fixnum   then self.value.to_i
-            when Time     then Time.parse(self.value)
-            when Date     then Date.parse(self.value)
-            when DateTime then DateTime.parse(self.value)
-            when Boolean  then ['true', 'false', 't', 'f', 'y', 'n', 'yes', 'no'].include?(self.value.to_s.downcase)
-            when Integer  then cast_to_integer(self.value.to_s)
-            else nil
+      if    self.type == Float    then value.to_f
+      elsif self.type == Time     then Time.parse(value)
+      elsif self.type == Date     then Date.parse(value)
+      elsif self.type == DateTime then DateTime.parse(value)
+      elsif self.type == Boolean  then ['true', 't'].include?(value.to_s.downcase)
+      elsif self.type == Integer  then
+        # ganked from happymapper :)
+        value_to_i = value.to_i
+        if value_to_i == 0 && value != '0'
+          value_to_s = value.to_s
+          begin
+            Integer(value_to_s =~ /^(\d+)/ ? $1 : value_to_s)
+          rescue ArgumentError
+            nil
           end
-
-      cast_value || self.type.cast(value) if self.type.respond_to?(:cast)
+        else
+          value_to_i
+        end
+      else
+        value
+      end
+    rescue
+      value
     end
 
     def ==(attribute)
