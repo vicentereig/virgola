@@ -44,6 +44,19 @@ You map it to an array of Person objects by specifying to match columns with the
   end
 </pre>
 
+You can specify the type for each attribute. If you don't, it will default to String.
+
+<pre lang="ruby">
+  class Person
+    include Virgola
+
+    attribute :id,    type: Integer
+    attribute :name,  type: String
+    attribute :email, type: String
+
+  end
+</pre>
+
 You actually extract the data and perform the mappings using the Extraction API.
 
 <pre lang="ruby">
