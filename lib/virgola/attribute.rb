@@ -50,7 +50,7 @@ module Virgola
 
     def ==(attribute)
       return false unless attribute.is_a?(Attribute)
-      self.name == attribute.name && self.value == attribute.value
+      self.name == attribute.name
     end
   end
 

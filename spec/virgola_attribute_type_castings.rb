@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class PersonNoCastings
+class PersonWithoutCasting
   include Virgola
 
   attribute :id    #  defaults to String

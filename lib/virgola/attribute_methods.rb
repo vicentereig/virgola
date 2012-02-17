@@ -18,9 +18,9 @@ module Virgola
         @attributes ||= []
       end
 
-      def attribute(name, type=String, options={})
+      def attribute(name, options={})
         define_attribute_methods Array.wrap name
-        attribute = Attribute.new(name.to_sym, type, options)
+        attribute = Attribute.new(name.to_sym, options.delete(:type), options)
         attributes << attribute unless attributes.include?(attribute)
       end
     end
