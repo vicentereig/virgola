@@ -12,7 +12,7 @@ require 'virgola/callbacks'
 
 module Virgola
   extend  ActiveSupport::Concern
-
+  include Virgola::Exports
   include Virgola::AttributeMethods
   include Virgola::Callbacks
 
