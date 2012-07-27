@@ -15,9 +15,15 @@ module Virgola
       @options = args.extract_options!
     end
 
-    def map(mapped_object, value)
-      mapped_object.send("#{self.name}=", cast(value))
+    def map(parent, row, index)
+      parent.send("#{self.name}=", cast(row[index]))
     end
+
+    def ==(attribute)
+      return false unless attribute.is_a?(Attribute)
+      self.name == attribute.name
+    end
+
 
     #
     # Based on <https://github.com/jnunemaker/happymapper/blob/master/lib/happymapper/item.rb#L84>
@@ -46,11 +52,6 @@ module Virgola
       end
     rescue
       value
-    end
-
-    def ==(attribute)
-      return false unless attribute.is_a?(Attribute)
-      self.name == attribute.name
     end
   end
 

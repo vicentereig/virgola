@@ -20,7 +20,7 @@ module Virgola
 
       def attribute(name, options={})
         define_attribute_methods Array.wrap name
-        attribute = Attribute.new(name.to_sym, options.delete(:type), options)
+        attribute = Virgola::Attribute.new(name.to_sym, options.delete(:type), options)
         attributes << attribute unless attributes.include?(attribute)
       end
     end
@@ -34,7 +34,11 @@ module Virgola
     end
 
     def attribute?(name)
-      self.attribute(name).present?
+      self.attribute(name.to_sym).present?
+    end
+
+    def get_attribute(name)
+      self.attributes.find { |a| a.name == name.to_sym }
     end
 
     def attributes
