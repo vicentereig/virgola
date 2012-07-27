@@ -34,7 +34,7 @@ CSV
 
 describe Virgola do
 
-  before :each do
+  before :all do
     @people = Person.parse(CSV_INPUT)
 
     @chris   = Person.new { |p| p.id = "1"; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}

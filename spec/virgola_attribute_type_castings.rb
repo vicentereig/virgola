@@ -60,7 +60,6 @@ CSV
 describe Virgola::Attribute do
 
   before :each do
-    @person_parser = Person.parse(CSV_INPUT)
     @chris   = Person.new { |p| p.id = 1; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}
     @konsti  = Person.new { |p| p.id = 2; p.name = "Konstantin Krauss"; p.email = "konstantin@propertybase.com"}
     @vicente = Person.new { |p| p.id = 3; p.name = "Vicente Reig";      p.email = "vicente@propertybase.com"}
@@ -68,7 +67,7 @@ describe Virgola::Attribute do
   end
 
   it 'should match us' do
-    Person.parse(CSV_INPUT).all.should == @expected_pips
+    Person.parse(CSV_INPUT).should == @expected_pips
   end
 
 
