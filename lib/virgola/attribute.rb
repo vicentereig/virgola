@@ -16,6 +16,7 @@ module Virgola
     end
 
     def map(parent, row, index)
+      index = options[:column] if options[:column].present?
       parent.send("#{self.name}=", cast(row[index]))
     end
 
