@@ -39,6 +39,6 @@ describe Virgola::SerializationMethods do
   end
 
   it 'should dump successfully CSV from an object collection' do
-    Person.parse(Person.dump(@people)) == @people
+    Person.parse(Person.dump(@people)).should == @people
   end
 end
