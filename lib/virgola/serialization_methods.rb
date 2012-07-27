@@ -14,8 +14,12 @@ module Virgola
         object
       end
 
-      def dump(collection)
+      def dump(collection, io="", options={})
+        CSV.dump(collection, io, options).strip
+      end
 
+      def csv_meta
+        []
       end
 
     protected
@@ -28,6 +32,13 @@ module Virgola
       end
     end
 
+    def csv_headers
+      self.attributes.map(&:name)
+    end
+
+    def csv_dump(headers)
+      headers.map { |h| self.attribute(h) }
+    end
 
     def map(header, row, index)
       attribute = self.get_attribute(header)
