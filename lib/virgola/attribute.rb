@@ -6,18 +6,19 @@ module Virgola
 
 
   class Attribute
-    attr_accessor :name, :type, :options
+    attr_accessor :name, :type, :column, :options
 
     def initialize(name,type=String,*args)
       @name    = name
       @type    = type
       @value   = nil
       @options = args.extract_options!
+      @column  = options.delete(:column)
     end
 
     def map(parent, row, index)
-      index = options[:column] if options[:column].present?
-      parent.send("#{self.name}=", cast(row[index]))
+      #index = options[:column] if options[:column].present?
+      parent.send("#{self.name}=", cast(row[self.column]))
     end
 
     def ==(attribute)
@@ -25,6 +26,9 @@ module Virgola
       self.name == attribute.name
     end
 
+    def <=>(attribute)
+      self.column <=> attribute.column
+    end
 
     #
     # Based on <https://github.com/jnunemaker/happymapper/blob/master/lib/happymapper/item.rb#L84>

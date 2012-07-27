@@ -18,8 +18,13 @@ module Virgola
         @attributes ||= []
       end
 
+      def has_attribute?(name)
+        self.attributes.find { |a| a.name == name }
+      end
+
       def attribute(name, options={})
         define_attribute_methods Array.wrap name
+        options.reverse_merge!(column: self.attributes.size)
         attribute = Virgola::Attribute.new(name.to_sym, options.delete(:type), options)
         attributes << attribute unless attributes.include?(attribute)
       end
@@ -38,7 +43,11 @@ module Virgola
     end
 
     def get_attribute(name)
-      self.attributes.find { |a| a.name == name.to_sym }
+      self.attributes.find { |a| a.name == name.to_sym } || self.relationships.find { |r| r.has_attribute?(name)}
+    end
+
+    def relationships
+      self.attributes.select { |a| a.is_a?(Virgola::Relationships::HasOne) }
     end
 
     def attributes
