@@ -47,20 +47,43 @@ module Virgola
 
     def csv_headers
       self.attributes.map { |attribute|
-
-        next attribute.value.csv_headers if attribute.is_a?(Virgola::Relationships::HasOne)
+        if attribute.is_a?(Virgola::Relationships::HasOne)
+          next attribute.type.attributes.map { |attr| {attribute.name => attr.name} }
+        end
         attribute.name
       }.flatten
     end
 
     def csv_dump(headers)
-      headers.map { |h| self.attribute(h) }
+      dump_strategy(headers).flatten
+    end
+
+    def dump_strategy(headers)
+      headers.map.with_index { |header, index|
+        if header.is_a?(Hash)
+          relation_name = header.keys.first
+          relation_headers = header.values.map { |name| [relation_name, name]*"_" }
+          result = self.send(relation_name).csv_dump(relation_headers)
+          headers = headers[0..index] + relation_headers + headers[index+1..headers.length]
+        else
+          result = self.attribute(header)
+        end
+        result
+        column_set = header.is_a?(Hash) ? self.send(relation_name).csv_dump(relation_headers) : self.attribute(header)
+        headers[index] = header
+        column_set
+      }.flatten
     end
 
     def map(header, row, index)
-      attribute = self.get_attribute(header)
+      attribute = self.find_attribute(header)
       attribute.map(self, row, index)
     end
+
+    def find_attribute(name)
+      self.attributes.find { |attribute| name =~ /^#{attribute.name.to_s}/ }
+    end
+
 
   end
 end

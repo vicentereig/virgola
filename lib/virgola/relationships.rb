@@ -10,7 +10,8 @@ module Virgola
       end
 
       def map(parent, row, offset)
-        child = self.type.new
+
+        child = parent.send(self.name) || self.type.new
         child.csv_headers.each { |header|
           child.map(header, row, offset)
         }
