@@ -47,10 +47,6 @@ describe Virgola::SerializationMethods do
     @expected_pips = [@chris, @konsti, @vicente]
   end
 
-  it 'should dump successfully CSV from an object collection' do
-    Dude.parse(Dude.dump(@people)).should == @people
-  end
-
   it 'should map object attributes regardless the order they were defined' do
     DudeWithColumnIndexes.parse(people_csv).should == @expected_pips
   end

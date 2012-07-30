@@ -3,6 +3,10 @@ module Virgola
     extend ActiveSupport::Concern
     module ClassMethods
 
+      def csv_headers
+        self.attributes.map(&:name)
+      end
+
       def offset(offset)
         @offset = offset
         self
@@ -48,7 +52,9 @@ module Virgola
     def csv_headers
       self.attributes.map { |attribute|
         if attribute.is_a?(Virgola::Relationships::HasOne)
-          next attribute.type.attributes.map { |attr| {attribute.name => attr.name} }
+          next attribute.type.attributes.map { |attr| [attribute.name, attr.name] * "_" }
+        elsif attribute.is_a?(Virgola::Relationships::HasMany)
+          next attribute.type.csv_headers
         end
         attribute.name
       }.flatten
@@ -60,28 +66,31 @@ module Virgola
 
     def dump_strategy(headers)
       headers.map.with_index { |header, index|
-        if header.is_a?(Hash)
-          relation_name = header.keys.first
-          relation_headers = header.values.map { |name| [relation_name, name]*"_" }
-          result = self.send(relation_name).csv_dump(relation_headers)
-          headers = headers[0..index] + relation_headers + headers[index+1..headers.length]
+        attribute = self.find_attribute(header)
+        if attribute.is_a?(Virgola::Relationships::HasOne)
+          headers = headers[0..index-1] + [header] + headers[index+1..headers.length]
+          field_name = header.split(/#{attribute.name}_/).last
+          next self.send(attribute.name).csv_dump([field_name])
         else
-          result = self.attribute(header)
+          next self.attribute(header)
         end
-        result
-        column_set = header.is_a?(Hash) ? self.send(relation_name).csv_dump(relation_headers) : self.attribute(header)
-        headers[index] = header
-        column_set
       }.flatten
     end
 
     def map(header, row, index)
       attribute = self.find_attribute(header)
-      attribute.map(self, row, index)
+      if attribute.is_a?(Virgola::Relationships::HasMany)
+        attribute.map(self, header, row, index)
+      elsif attribute.is_a?(Virgola::Relationships::HasOne)
+        attribute.map(self, row, index)
+      else
+        attribute.map(self, row)
+      end
     end
 
     def find_attribute(name)
-      self.attributes.find { |attribute| name =~ /^#{attribute.name.to_s}/ }
+      self.attributes.find { |attribute| name =~ /^#{attribute.name.to_s}/ } ||
+          self.attributes.find { |attribute| name =~ /^#{attribute.name.to_s.singularize}/ }
     end
 
 

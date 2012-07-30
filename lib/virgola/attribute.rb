@@ -11,13 +11,13 @@ module Virgola
     def initialize(name,type=String,*args)
       @name    = name
       @type    = type
-      @value   = nil
       @options = args.extract_options!
       @column  = options.delete(:column)
     end
 
-    def map(parent, row, index)
-      #index = options[:column] if options[:column].present?
+    def map(parent, row, index=nil)
+      self.column= index unless index.blank?
+
       parent.send("#{self.name}=", cast(row[self.column]))
     end
 
