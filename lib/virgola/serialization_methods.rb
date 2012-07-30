@@ -3,25 +3,15 @@ module Virgola
     extend ActiveSupport::Concern
     module ClassMethods
 
-      def csv_headers
-        self.attributes.map(&:name)
-      end
-
-      def offset(offset)
-        @offset = offset
-        self
-      end
-
       def parse(csv)
         CSV.load(loader_csv(csv))
       end
 
       def csv_load(meta, headers, row)
-        @offset ||= 0
         object = self.new
 
         headers.each.with_index { |header, index|
-          object.map(header, row, index) if index >= @offset
+          self.attributes[header]
         }
 
         object
@@ -50,14 +40,14 @@ module Virgola
     end
 
     def csv_headers
-      self.attributes.map { |attribute|
-        if attribute.is_a?(Virgola::Relationships::HasOne)
-          next attribute.type.attributes.map { |attr| [attribute.name, attr.name] * "_" }
-        elsif attribute.is_a?(Virgola::Relationships::HasMany)
-          next attribute.type.csv_headers
-        end
-        attribute.name
-      }.flatten
+      #self.attributes.map { |attribute|
+      #  if attribute.is_a?(Virgola::Relationships::HasOne)
+      #    next attribute.type.attributes.map { |attr| [attribute.name, attr.name] * "_" }
+      #  elsif attribute.is_a?(Virgola::Relationships::HasMany)
+      #    next attribute.type.csv_headers
+      #  end
+      #  attribute.name
+      #}.flatten
     end
 
     def csv_dump(headers)

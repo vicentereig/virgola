@@ -13,16 +13,25 @@ require 'virgola/callbacks'
 
 module Virgola
   extend  ActiveSupport::Concern
-  include Virgola::SerializationMethods
   include Virgola::AttributeMethods
-  include Virgola::Relationships
   include Virgola::Callbacks
 
   module ClassMethods
     def create(attributes={})
       self.new { |o|
-        attribute
+        attributes.each { |name, value|
+          build_attribute(name, value)
+        }
       }
+    end
+
+  protected
+    def build_attribute(name, value)
+      if self.relations.include?(name)
+        self.relations[name].build(value)
+      else
+        self.attributes[name].build(value)
+      end
     end
   end
 end
