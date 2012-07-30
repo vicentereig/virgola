@@ -45,7 +45,7 @@ module Virgola
       end
 
       def map(parent, header, row, offset)
-
+        debugger
         self.parent = parent
         children = parent.send(self.name)
         if children.blank?
@@ -57,7 +57,7 @@ module Virgola
         _, position, field_name = header.split(/_/)
         position = position.to_i - 1
         child = children[position] || self.type.new
-        child.map(field_name,row,offset)
+        child.map_from_has_many(field_name,row,offset)
         unless children[position].present?
           children[position] = child if  child.send(field_name).present?
         end
@@ -67,6 +67,10 @@ module Virgola
       def has_attribute?(name)
         self.type.has_attribute?(name.to_sym)
       end
+    end
+
+    def initialize(*args)
+      puts "Callback"
     end
 
     module ClassMethods

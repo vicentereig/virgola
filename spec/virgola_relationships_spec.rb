@@ -84,7 +84,21 @@ class DudeWithPictures
 end
 
 
-describe Virgola::SerializationMethods do
+describe Virgola::Relationships do
+  context "When initalizing a Virgola object" do
+    before :each do
+      @dude = DudeWithPictures.new
+    end
+
+    it 'should initialize has_one to nil' do
+      @dude.contact_info.should be_nil
+    end
+
+    it 'should initialize has_many to []' do
+      @dude.pictures.should be_empty
+    end
+  end
+
   context "Loading and Dumping HasMany Relationships" do
     before :each do
       @chris   = DudeWithPictures.new { |p| p.id = "1"; p.name = "Chris Floess";      p.contact_info = ContactInfo.new { |c| c.email = "chris@propertybase.com";      c.phone = "123456798" } }
@@ -94,8 +108,8 @@ describe Virgola::SerializationMethods do
 
 
       @pictures = [ Picture.new { |p| p.title = "Title #1"; p.url = "http://domain.com/1.jpg" },
-                   Picture.new { |p| p.title = "Title #2"; p.url = "http://domain.com/2.jpg" },
-                   Picture.new { |p| p.title = "Title #3"; p.url = "http://domain.com/3.jpg" } ]
+                    Picture.new { |p| p.title = "Title #2"; p.url = "http://domain.com/2.jpg" },
+                    Picture.new { |p| p.title = "Title #3"; p.url = "http://domain.com/3.jpg" } ]
 
       @pictures.each { |p| @chris.pictures ||= [];  @chris.pictures << p }
     end

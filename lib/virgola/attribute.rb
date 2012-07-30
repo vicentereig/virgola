@@ -15,9 +15,7 @@ module Virgola
       @column  = options.delete(:column)
     end
 
-    def map(parent, row, index=nil)
-      self.column= index unless index.blank?
-
+    def map(parent, row)
       parent.send("#{self.name}=", cast(row[self.column]))
     end
 

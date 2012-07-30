@@ -17,4 +17,12 @@ module Virgola
   include Virgola::AttributeMethods
   include Virgola::Relationships
   include Virgola::Callbacks
+
+  module ClassMethods
+    def create(attributes={})
+      self.new { |o|
+        attribute
+      }
+    end
+  end
 end
