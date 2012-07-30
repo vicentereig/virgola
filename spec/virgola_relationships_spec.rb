@@ -40,16 +40,9 @@ protected
 end
 
 
-CSV_INPUT = <<-CSV
-id,name,email
-1,Chris Floess,chris@propertybase.com
-2,Konstantin Krauss,konstantin@propertybase.com
-3,Vicente Reig,vicente@propertybase.com
-CSV
-
 describe Virgola::SerializationMethods do
 
-  before :all do
+  before :each do
 
     @chris   = Person.new { |p| p.id = "1"; p.name = "Chris Floess";      p.contact_info = ContactInfo.new { |c| c.email = "chris@propertybase.com"      } }
     @konsti  = Person.new { |p| p.id = "2"; p.name = "Konstantin Krauss"; p.contact_info = ContactInfo.new { |c| c.email = "konstantin@propertybase.com" } }
@@ -58,6 +51,6 @@ describe Virgola::SerializationMethods do
   end
 
   it 'should succesfully load the has_one relation' do
-    Person.parse(CSV_INPUT).should == @expected_pips
+    Person.parse(people_csv).should == @expected_pips
   end
 end

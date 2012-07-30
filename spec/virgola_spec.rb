@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-class Person
+class Developer
   include Virgola
 
   attribute :id
@@ -14,7 +14,7 @@ class Person
   after_map :do_something_after_map_a_row
 
   def ==(pip)
-    return false unless pip.is_a?(Person)
+    return false unless pip.is_a?(Developer)
     self.id == pip.id && self.name == pip.name && self.email == pip.email
   end
 
@@ -25,21 +25,13 @@ class Person
   end
 end
 
-CSV_INPUT = <<-CSV
-id,name,email
-1,"Chris Floess",chris@propertybase.com
-2,"Konstantin Krauss",konstantin@propertybase.com
-3,"Vicente Reig",vicente@propertybase.com
-CSV
-
 describe Virgola do
 
-  before :all do
-    @people = Person.parse(CSV_INPUT)
-
-    @chris   = Person.new { |p| p.id = "1"; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}
-    @konsti  = Person.new { |p| p.id = "2"; p.name = "Konstantin Krauss"; p.email = "konstantin@propertybase.com"}
-    @vicente = Person.new { |p| p.id = "3"; p.name = "Vicente Reig";      p.email = "vicente@propertybase.com"}
+  before :each do
+    @people  = Developer.parse(people_csv)
+    @chris   = Developer.new { |p| p.id = "1"; p.name = "Chris Floess";      p.email = "chris@propertybase.com"}
+    @konsti  = Developer.new { |p| p.id = "2"; p.name = "Konstantin Krauss"; p.email = "konstantin@propertybase.com"}
+    @vicente = Developer.new { |p| p.id = "3"; p.name = "Vicente Reig";      p.email = "vicente@propertybase.com"}
     @expected_pips = [@chris, @konsti, @vicente]
 
   end
@@ -51,7 +43,7 @@ describe Virgola do
   end
 
   it 'should allow to override attribute accesors' do
-    class Person
+    class Developer
       def email
         "<#{super}>"
       end
@@ -61,7 +53,7 @@ describe Virgola do
   end
 
   it 'should allow to access instance attributes' do
-    class Person
+    class Developer
       def email
         "<#{@email}>"
       end
