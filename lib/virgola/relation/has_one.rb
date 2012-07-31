@@ -9,9 +9,26 @@ module Virgola
         end
       end
 
-      class Proxy
-        def initialize(name, options)
+      def proxy(key)
+        self.attributes[key]
+      end
 
+      def attribute=(key, child)
+        return super unless self.attributes[key].is_a?(Virgola::Relation::HasOne::Proxy)
+        proxy        = self.proxy(key)
+        proxy.target = child
+        child.belongs_to!(proxy.inverse_of, self) if child.belongs_to?(proxy.inverse_of)
+
+        super(key, child) # set the instance variable
+      end
+
+      class Proxy
+        attr_accessor :target, :inverse_of
+
+        def initialize(name, options=[])
+          @name = name
+          @inverse_of = options[:inverse_of]
+          @options = options
         end
       end
     end

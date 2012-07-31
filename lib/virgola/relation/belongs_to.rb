@@ -9,10 +9,31 @@ module Virgola
         end
       end
 
-      class Proxy
-        def initialize(name, options)
+      def proxy(key)
+        self.attributes[key]
+      end
 
+      def belongs_to?(association_name)
+        self.proxy(association_name).is_a?(Virgola::Relation::BelongsTo::Proxy)
+      end
+
+      def belongs_to!(association_name, parent)
+        self.send "attribute=", association_name, parent
+      end
+
+      class Proxy
+        attr_accessor :target, :inverse_of
+
+        def initialize(name, options)
+          @name       = name
+          @options    = options
+          @inverse_of = options[:inverse_of]
         end
+
+        def target?
+          self.target.present?
+        end
+
       end
     end
   end

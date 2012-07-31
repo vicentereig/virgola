@@ -23,7 +23,8 @@ class Task
 
   column :title
   column :description
-  belongs_to :developer
+
+  belongs_to :developer, inverse_of: 'tasks'
 
   def initialize
     yield self if block_given?
@@ -42,8 +43,8 @@ class Developer
   column :name
   column :email
 
-  has_many :tasks,   type: Task
-  has_one  :profile, type: CompanyProfile
+  has_many :tasks,   type: Task,           inverse_of: 'developer'
+  has_one  :profile, type: CompanyProfile, inverse_of: 'developer'
 
   def initialize
     yield self if block_given?
@@ -73,7 +74,6 @@ describe Virgola do
     self.dev.should respond_to "tasks"
     self.dev.should respond_to "tasks="
     self.dev.should respond_to "tasks?"
-    self.dev.should respond_to "tasks<<"
     self.dev.tasks.should be_empty
   end
 
@@ -100,8 +100,23 @@ describe Virgola do
   it 'should allow adding more children to has_many relation' do
     -> {
       self.dev.tasks << self.task
-    }.should change(self.dev.tasks, :size).from(0).to(1)
+      self.dev.tasks << self.task
+      self.dev.tasks << self.task
+    }.should change(self.dev.tasks, :size).from(0).to(3)
+  end
 
+  it 'should initialize a has_one back-reference at the belongs_to side' do
+    self.dev.profile.should be_nil
+    self.dev.profile= self.profile
+    self.profile.developer.should == self.dev
+  end
+
+  it 'should initialize a has_many back-reference at the belongs_to side' do
+    self.dev.tasks << self.task
+    self.dev.tasks << self.task
+    self.dev.tasks << self.task
+
+    self.dev.tasks.each { |t| t.developer.should == self.dev }
   end
 
   #
