@@ -49,6 +49,6 @@ class Developer
 
   def ==(pip)
     return false unless pip.is_a?(self.class)
-    self.id == pip.id && self.name == pip.name && self.email == pip.email
+    self.id == pip.id && self.name == pip.name && self.tasks == pip.tasks && self.profile == pip.profile
   end
 end
