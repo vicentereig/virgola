@@ -23,7 +23,45 @@ module Virgola
 
       # returns the serialized fields
       def csv_dump(headers)
+        headers.map { |header|
+          next column_value(header) if self.proxy(header).is_a?(Virgola::Columns::Proxy)
 
+          proxy = self.proxy_for(header)
+
+          if proxy.is_a?(Virgola::Relation::HasOne::Proxy)
+            next has_one_column_value(proxy, header)
+          end
+
+          if proxy.is_a?(Virgola::Relation::HasMany::Proxy)
+            next has_many_column_value(proxy, header)
+          end
+        }.flatten.compact
+      end
+
+    protected
+      def proxy_for(header)
+        self.attributes.values.find { |proxy| header =~ /^#{proxy.prefix}/ }
+      end
+
+      def column_value(header)
+        self.send(header)
+      end
+
+      def has_one_column_value(proxy, header)
+        self.send(proxy.name).send(field_name(proxy.prefix, header))
+      end
+
+      def has_many_column_value(proxy, header)
+        index, column_name = field_name_with_index(proxy.prefix, header)
+        self.send(proxy.name)[index.to_i].send(column_name)
+      end
+
+      def field_name_with_index(prefix, header)
+        field_name(prefix, header).split(/(\d+)_(.*)/).reject(&:blank?)
+      end
+
+      def field_name(prefix, header)
+        header.split(/^#{prefix}_/).reject(&:blank?).first
       end
     end
   end

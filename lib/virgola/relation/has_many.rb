@@ -35,7 +35,7 @@ module Virgola
       end
 
       class Proxy
-        attr_accessor :target, :inverse_of, :collection
+        attr_accessor :target, :inverse_of, :collection, :name
 
         def initialize(name, options=[])
           @name       = name
@@ -50,6 +50,10 @@ module Virgola
               [@name.to_s.singularize, index, key] * "_" if proxy.is_a?(Virgola::Columns::Proxy)
             }
           }.flatten.compact
+        end
+
+        def prefix
+          @prefix ||= @name.to_s.singularize
         end
       end
 

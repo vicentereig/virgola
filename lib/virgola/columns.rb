@@ -35,6 +35,11 @@ module Virgola
         [@name.to_s]
       end
 
+      def prefix
+        @prefix ||= @name.to_s
+      end
+
+
       #
       # Based on <https://github.com/jnunemaker/happymapper/blob/master/lib/happymapper/item.rb#L84>
       #

@@ -18,4 +18,17 @@ describe Virgola::Serialization::Dump do
     end
   end
 
+  describe '#csv_dump' do
+    before :each do
+      @developer = self.dev
+      @developer.tasks << self.task
+      @developer.profile = self.profile
+    end
+
+    it 'should return a serialized array' do
+      expected = [1, 'John Snow', 'The Title', 'The Description', 'john@snow.com', 017610101010]
+      @developer.csv_dump(@developer.csv_headers).should == expected
+    end
+  end
+
 end

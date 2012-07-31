@@ -19,7 +19,7 @@ module Virgola
       end
 
       class Proxy
-        attr_accessor :target, :inverse_of
+        attr_accessor :target, :inverse_of, :name
 
         def initialize(name, options=[])
           @name       = name
@@ -32,6 +32,10 @@ module Virgola
           @type.attributes.collect { |key, proxy|
             [@name, key]*"_" if proxy.is_a?(Virgola::Columns::Proxy)
           }.compact
+        end
+
+        def prefix
+          @prefix ||= @name.to_s
         end
       end
     end
