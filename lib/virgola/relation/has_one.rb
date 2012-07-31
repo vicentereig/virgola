@@ -9,10 +9,6 @@ module Virgola
         end
       end
 
-      def proxy(key)
-        self.attributes[key]
-      end
-
       def attribute=(key, child)
         return super unless self.attributes[key].is_a?(Virgola::Relation::HasOne::Proxy)
         proxy        = self.proxy(key)

@@ -21,6 +21,10 @@ module Virgola
       end
     end
 
+    def proxy(key)
+      self.attributes[key]
+    end
+
     def attribute(key)
       instance_variable_get "@#{key}"
     end

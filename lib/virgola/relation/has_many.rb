@@ -59,10 +59,6 @@ module Virgola
         super || default_initializer(key)
       end
 
-      def proxy(key)
-        self.attributes[key]
-      end
-
       def attribute=(key, children)
         return super unless proxy(key).is_a?(Virgola::Relation::HasMany::Proxy)
 
