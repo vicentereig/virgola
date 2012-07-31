@@ -1,3 +1,5 @@
+require 'active_support/inflector'
+
 module Virgola
   module Relation
     module HasMany
@@ -32,6 +34,26 @@ module Virgola
         end
       end
 
+      class Proxy
+        attr_accessor :target, :inverse_of, :collection
+
+        def initialize(name, options=[])
+          @name       = name
+          @inverse_of = options.delete(:inverse_of)
+          @type       = options.delete(:type)
+          @options    = options
+        end
+
+        def column_names
+          @type.attributes.collect { |key, proxy|
+            self.collection.collect.with_index { |_, index|
+              [@name.to_s.singularize, index, key] * "_" if proxy.is_a?(Virgola::Columns::Proxy)
+            }
+          }.flatten.compact
+        end
+      end
+
+
       def attribute(key)
         return super unless proxy(key).is_a?(Virgola::Relation::HasMany::Proxy)
         super || default_initializer(key)
@@ -48,21 +70,10 @@ module Virgola
 
         super(key, children)
       end
-
-      class Proxy
-        attr_accessor :target, :inverse_of
-
-        def initialize(name, options=[])
-          @name       = name
-          @inverse_of = options[:inverse_of]
-          @options    = options
-        end
-      end
-
     protected
       def default_initializer(key)
         collection = Collection.new(self.proxy(key), self)
-
+        self.proxy(key).collection = collection
         instance_variable_set("@#{key}", collection)
         instance_variable_get("@#{key}")
       end

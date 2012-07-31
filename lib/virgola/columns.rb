@@ -6,15 +6,12 @@ module Virgola
 
     module ClassMethods
       def column(name, options={})
-        options.reverse_merge!(column: self.attributes.size)
         define_attribute_methods [name.to_sym]
-        self.attributes[name.to_s] ||= Virgola::Columns::ColumnProxy.new(name.to_sym, options)
+        self.attributes[name.to_s] ||= Virgola::Columns::Proxy.new(name.to_sym, options)
       end
     end
 
-    Types = [String, Float, Time, Date, DateTime, Integer, Boolean]
-
-    class ColumnProxy
+    class Proxy
       attr_accessor :name, :type, :index
 
       def initialize(name,*args)
@@ -34,13 +31,15 @@ module Virgola
         self.index <=> column.index
       end
 
-      def build(value)
-
+      def column_names
+        [@name.to_s]
       end
 
       #
       # Based on <https://github.com/jnunemaker/happymapper/blob/master/lib/happymapper/item.rb#L84>
       #
+      Types = [String, Float, Time, Date, DateTime, Integer, Boolean]
+
       def cast(value)
         if    self.type == Float    then value.to_f
         elsif self.type == Time     then Time.parse(value)

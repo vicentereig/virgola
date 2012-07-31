@@ -3,31 +3,31 @@ module Virgola
     extend ActiveSupport::Concern
     module ClassMethods
 
-      def parse(csv)
-        CSV.load(loader_csv(csv))
-      end
+      #def parse(csv)
+      #  CSV.load(loader_csv(csv))
+      #end
 
-      def csv_load(meta, headers, row)
-        object = self.new
-
-        headers.each.with_index { |header, index|
-          self.attributes[header]
-        }
-
-        object
-      rescue NoMethodError => error
-        puts error
-        puts error.backtrace
-        exit
-      end
+      #def csv_load(meta, headers, row)
+      #  object = self.new
+      #
+      #  headers.each.with_index { |header, index|
+      #    self.attributes[header]
+      #  }
+      #
+      #  object
+      #rescue NoMethodError => error
+      #  puts error
+      #  puts error.backtrace
+      #  exit
+      #end
 
       def dump(collection, io="", options={})
         CSV.dump(collection, io, options).strip
       end
-
-      def csv_meta
-        []
-      end
+      #
+      #def csv_meta
+      #  []
+      #end
 
     protected
       def meta

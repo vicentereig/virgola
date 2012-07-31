@@ -26,9 +26,16 @@ module Virgola
         attr_accessor :target, :inverse_of
 
         def initialize(name, options=[])
-          @name = name
-          @inverse_of = options[:inverse_of]
-          @options = options
+          @name       = name
+          @inverse_of = options.delete(:inverse_of)
+          @type       = options.delete(:type)
+          @options    = options
+        end
+
+        def column_names
+          @type.attributes.collect { |key, proxy|
+            [@name, key]*"_" if proxy.is_a?(Virgola::Columns::Proxy)
+          }.compact
         end
       end
     end
