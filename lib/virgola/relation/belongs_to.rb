@@ -22,7 +22,7 @@ module Virgola
       end
 
       class Proxy
-        attr_accessor :target, :inverse_of
+        attr_accessor :target, :inverse_of, :type
 
         def initialize(name, options)
           @name       = name
