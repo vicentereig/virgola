@@ -12,5 +12,9 @@ module Virgola
     def people_has_manies_csv
       File.read('spec/fixtures/people_has_manies.csv')
     end
+
+    def developer_csv
+      File.read('spec/fixtures/developer.csv')
+    end
   end
 end

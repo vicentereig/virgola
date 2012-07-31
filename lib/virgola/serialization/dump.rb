@@ -8,12 +8,12 @@ module Virgola
         def dump(collection, io="", options={})
           CSV.dump(collection, io, options).strip
         end
-      end
 
-      # Avoid CSV writing the 'class, Class.to_s' row
-      # It will dump a blank line instead which will be removed
-      def csv_meta
-        []
+        # Avoid CSV writing the 'class, Class.to_s' row
+        # It will dump a blank line instead which will be removed
+        def csv_meta
+          []
+        end
       end
 
       # returns an Array of headers which will be serialized
