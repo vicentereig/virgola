@@ -1,15 +1,17 @@
 class Boolean; end
 
 module Virgola
-  module Column
+  module Columns
     extend ActiveSupport::Concern
 
     module ClassMethods
       def column(name, options={})
-        self.attributes[name.to_s] ||= Virgola::Column.new(name.to_sym, options)
+        options.reverse_merge!(column: self.attributes.size)
+        debugger
+        define_attribute_methods [name.to_sym]
+        self.attributes[name.to_s] ||= Virgola::Columns::ColumnProxy.new(name.to_sym, options)
       end
     end
-
 
     Types = [String, Float, Time, Date, DateTime, Integer, Boolean]
 
@@ -31,6 +33,10 @@ module Virgola
 
       def <=>(column)
         self.index <=> column.index
+      end
+
+      def build(value)
+
       end
 
       #
