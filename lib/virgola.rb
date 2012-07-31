@@ -23,13 +23,4 @@ module Virgola
 
   #include Virgola::Callbacks
 
-  module ClassMethods
-    def create(attributes={})
-      self.new { |o|
-        attributes.each { |name, value|
-          build_attribute(name, value)
-        }
-      }
-    end
-  end
 end
