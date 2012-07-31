@@ -16,8 +16,8 @@ Gem::Specification.new do |s|
   s.email             = 'vicente@propertybase.com'
   s.homepage          = 'https://github.com/propertybase/virgola'
 
-  s.add_runtime_dependency('activesupport', '3.1.3')
-  s.add_runtime_dependency('activemodel',   '3.1.3')
+  s.add_runtime_dependency('activesupport', '>= 3.1.3')
+  s.add_runtime_dependency('activemodel',   '>= 3.1.3')
   s.add_development_dependency('bundler',   '~> 1.0')
   s.add_development_dependency('fakefs')
   s.add_development_dependency('rspec')
