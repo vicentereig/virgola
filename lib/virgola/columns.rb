@@ -7,7 +7,6 @@ module Virgola
     module ClassMethods
       def column(name, options={})
         options.reverse_merge!(column: self.attributes.size)
-        debugger
         define_attribute_methods [name.to_sym]
         self.attributes[name.to_s] ||= Virgola::Columns::ColumnProxy.new(name.to_sym, options)
       end

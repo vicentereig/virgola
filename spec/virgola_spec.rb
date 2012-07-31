@@ -1,5 +1,14 @@
 require 'spec_helper'
 
+class Task
+  include Virgola
+
+  column :title
+  column :description
+
+  #belongs_to :developer
+end
+
 class Developer
   include Virgola
 
@@ -7,33 +16,35 @@ class Developer
   column :name
   column :email
 
+  has_many :tasks, type: Task
+
   def initialize
     yield self if block_given?
   end
-
-  #after_map :do_something_after_map_a_row
 
   def ==(pip)
     return false unless pip.is_a?(Developer)
     self.id == pip.id && self.name == pip.name && self.email == pip.email
   end
-
-  #protected
-  #
-  #def do_something_after_map_a_row
-  #
-  #end
 end
 
 describe Virgola do
+  let(:dev) { Developer.new { |p| p.id = 1; p.name = 'John Snow'; p.email = 'john@snow.com' } }
 
-  it 'should repond to column attribute methods' do
-    @dev = Developer.new { |p| p.id = 1; p.name = 'John Snow'; p.email = 'john@snow.com' }
+  it 'should respond to column attribute methods' do
     %w(id name email).each { |field|
-      @dev.should respond_to "#{field}="
-      @dev.should respond_to "#{field}"
-      @dev.should respond_to "#{field}?"
+      self.dev.should respond_to "#{field}="
+      self.dev.should respond_to "#{field}"
+      self.dev.should respond_to "#{field}?"
     }
+  end
+
+  it 'should respond to has_many attribute methods' do
+    self.dev.should respond_to "tasks"
+    self.dev.should respond_to "tasks="
+    self.dev.should respond_to "tasks?"
+    self.dev.should respond_to "tasks<<"
+    self.dev.tasks.should == []
   end
 
   #
