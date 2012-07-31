@@ -1,11 +1,11 @@
 module Virgola
   module Relation
-    module HasOne
+    module BelongsTo
       extend ActiveSupport::Concern
 
       module ClassMethods
-        def has_one(name, options={})
-          self.attributes[name.to_s] ||= Virgola::Relation::HasOne::Proxy.new(name.to_sym, options)
+        def belongs_to(name, options={})
+          self.attributes[name.to_s] ||= Virgola::Relation::BelongsTo::Proxy.new(name.to_sym, options)
         end
       end
 

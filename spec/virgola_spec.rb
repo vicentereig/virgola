@@ -1,12 +1,26 @@
 require 'spec_helper'
 
+class CompanyProfile
+  include Virgola
+
+  column :email
+  column :phone
+
+  def initialize
+    yield self if block_given?
+  end
+end
+
 class Task
   include Virgola
 
   column :title
   column :description
+  belongs_to :developer
 
-  #belongs_to :developer
+  def initialize
+    yield self if block_given?
+  end
 end
 
 class Developer
@@ -16,7 +30,8 @@ class Developer
   column :name
   column :email
 
-  has_many :tasks, type: Task
+  has_many :tasks,   type: Task
+  has_one  :profile, type: CompanyProfile
 
   def initialize
     yield self if block_given?
@@ -29,7 +44,9 @@ class Developer
 end
 
 describe Virgola do
-  let(:dev) { Developer.new { |p| p.id = 1; p.name = 'John Snow'; p.email = 'john@snow.com' } }
+
+  let(:dev)  { Developer.new { |p| p.id = 1; p.name = 'John Snow'; p.email = 'john@snow.com' } }
+  let(:task) { Task.new      { |t| t.title = 'The Title'; t.description = 'The Description'  } }
 
   it 'should respond to column attribute methods' do
     %w(id name email).each { |field|
@@ -45,6 +62,20 @@ describe Virgola do
     self.dev.should respond_to "tasks?"
     self.dev.should respond_to "tasks<<"
     self.dev.tasks.should == []
+  end
+
+  it 'should respond to has_one attribute methods' do
+    self.dev.should respond_to "profile"
+    self.dev.should respond_to "profile="
+    self.dev.should respond_to "profile?"
+    self.dev.profile.should be_nil
+  end
+
+  it 'should respond to belongs_to attribute methods' do
+    self.task.should respond_to "developer"
+    self.task.should respond_to "developer?"
+    self.task.should respond_to "developer="
+    self.task.developer.should be_nil
   end
 
   #
